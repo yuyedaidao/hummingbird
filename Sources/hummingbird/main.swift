@@ -1,6 +1,7 @@
 import Foundation
 import CommandLineKit
 import Rainbow
+import hummingbirdKit
 
 let cli = CommandLineKit.CommandLine()
 
