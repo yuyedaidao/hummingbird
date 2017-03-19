@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5544BD851E7E962500AE4E43 /* FindProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5544BD841E7E962500AE4E43 /* FindProcess.swift */; };
 		55923CE11E78CF3900110F8C /* StringsSearchRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55923CE01E78CF3900110F8C /* StringsSearchRule.swift */; };
 		55923CE31E78D13200110F8C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55923CE21E78D13200110F8C /* Extensions.swift */; };
 		OBJ_101 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* main.swift */; };
@@ -120,6 +121,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5544BD841E7E962500AE4E43 /* FindProcess.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindProcess.swift; sourceTree = "<group>"; };
 		55923CE01E78CF3900110F8C /* StringsSearchRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringsSearchRule.swift; sourceTree = "<group>"; };
 		55923CE21E78D13200110F8C /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		OBJ_10 /* Option.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 				OBJ_38 /* HummingbirdKit.swift */,
 				55923CE01E78CF3900110F8C /* StringsSearchRule.swift */,
 				55923CE21E78D13200110F8C /* Extensions.swift */,
+				5544BD841E7E962500AE4E43 /* FindProcess.swift */,
 			);
 			name = hummingbirdKit;
 			path = Sources/hummingbirdKit;
@@ -482,6 +485,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				5544BD851E7E962500AE4E43 /* FindProcess.swift in Sources */,
 				55923CE11E78CF3900110F8C /* StringsSearchRule.swift in Sources */,
 				55923CE31E78D13200110F8C /* Extensions.swift in Sources */,
 				OBJ_118 /* HummingbirdKit.swift in Sources */,
