@@ -23,7 +23,35 @@ enum FileType {
 }
 
 public struct FileInof {
-    let path: String
+    public let path: Path
+    public let size: Int
+    init(path: String) {
+        self.path = Path(path)
+        self.size = self.path.size
+    }
+}
+
+extension Path {
+    var size: Int {
+        if isDirectory {
+            let childrenPaths = try? children()
+            return (childrenPaths ?? []).reduce(0) {$0 + $1.size}
+        } else {
+            if lastComponent.hasSuffix(".") {return 0}
+            let attr = try? FileManager.default.attributesOfItem(atPath: absolute().string)
+            
+            if let num = attr?[.size] as? NSNumber {
+                return num.intValue
+            } else {
+                return 0
+            }
+        }
+    }
+}
+
+public enum HummingbirdError: Error {
+    case noResourceExtension
+    case noFileExtension
 }
 
 public struct Hummingbird {
@@ -35,13 +63,27 @@ public struct Hummingbird {
     public init(projectPath: String, excludedPaths: [String], resourceExtensions: [String], fileExtensions: [String]){
         let path = Path(projectPath).absolute()
         self.projectPath = path
-        self.excludedPaths = excludedPaths.map{ path + Path($0).absolute()}
+        self.excludedPaths = excludedPaths.map{ path + $0 }
+        for path in self.excludedPaths {
+            if  !path.exists {
+                print("path: \"\(path.string)\" is not existed".magenta)
+            }
+        }
         self.resourceExtensions = resourceExtensions
         self.fileExtensions = fileExtensions;
     }
     
-    public func unusedResource() -> [String] {
-        fatalError()
+    public func unusedResources() throws -> [FileInof] {
+        guard !resourceExtensions.isEmpty else {
+            throw HummingbirdError.noResourceExtension
+        }
+        guard !fileExtensions.isEmpty else {
+            throw HummingbirdError.noFileExtension
+        }
+        let resources =  allResources()
+        let allStrings = allStringInUse()
+        
+        return Hummingbird.filterUnused(from: resources, used: allStrings).map{ FileInof(path: $0) }
     }
     
     public func allStringInUse() -> Set<String> {
@@ -93,25 +135,59 @@ public struct Hummingbird {
         
     }
     
-    func resourcesInUse() -> [String : String] {
+    public func allResources() -> [String : String] {
         guard let process = FindProcess(path: projectPath, extensions: resourceExtensions, exclued: excludedPaths) else {
             return [:]
         }
+
         let found = process.execute()
-        var fileds = [String : String]()
+        var files = [String : String]()
         let regularDirExtensions = ["imageset", "launchimage", "bundle"]
-        for file in found {
-            let dirPath = regularDirExtensions.map{ ".\($0)/" }
-            for dir in dirPath where file.contains(dir) {
-            
-            }
-            
+        let nonDirExtensions = resourceExtensions.filter {
+            !regularDirExtensions.contains($0)
         }
-        return fileds
+        let dirPath = regularDirExtensions.map{ ".\($0)/" }
+        fileLoop: for file in found {//去掉了 "imageset/" 也就是保留了imageset
+            for dir in dirPath where file.contains(dir) {
+                continue fileLoop
+            }
+            let filePath = Path(file)
+            //去除image.png这种形式的文件夹
+            if let ext = filePath.extension, filePath.isDirectory && nonDirExtensions.contains(ext) {
+                continue
+            }
+            let key = file.plainName(extensions: resourceExtensions)
+            if let _ = files[key] {
+                print("Found a duplicated file key: \(key)".yellow.bold)
+                continue
+            }
+            files[key] = file
+        }
+        return files
     }
     
-    public func delete() -> Void {
-        
+    static func filterUnused(from all: [String : String], used: Set<String>)  -> Set<String> {
+        let unusedPairs = all.filter { (key, _) -> Bool in
+            return !used.contains(key) && !used.contains { $0.similarPatternWithNumberIndex(other: key)
+            }
+        }
+        return Set(unusedPairs.map{ $0.value})
+    }
+    
+    static public func delete(_ unusedFiles: [FileInof]) -> [(FileInof, Error)] {
+        var failed = [(FileInof, Error)]()
+        for file in unusedFiles {
+            do {
+                try file.path.delete()
+            } catch {
+                failed.append((file, error))
+            }
+        }
+        return failed
     }
     
 }
+
+let digitalRegex = try! NSRegularExpression(pattern: "(\\d+)", options: .caseInsensitive)
+
+

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_53"
+               BlueprintIdentifier = "OBJ_55"
                BuildableName = "CommandLineKit.framework"
                BlueprintName = "CommandLineKit"
                ReferencedContainer = "container:hummingbird.xcodeproj">
@@ -28,7 +28,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_62"
+               BlueprintIdentifier = "OBJ_64"
                BuildableName = "Rainbow.framework"
                BlueprintName = "Rainbow"
                ReferencedContainer = "container:hummingbird.xcodeproj">
@@ -42,7 +42,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_79"
+               BlueprintIdentifier = "OBJ_81"
                BuildableName = "Spectre.framework"
                BlueprintName = "Spectre"
                ReferencedContainer = "container:hummingbird.xcodeproj">
@@ -56,7 +56,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_93"
+               BlueprintIdentifier = "OBJ_95"
                BuildableName = "PathKit.framework"
                BlueprintName = "PathKit"
                ReferencedContainer = "container:hummingbird.xcodeproj">
@@ -70,7 +70,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_102"
+               BlueprintIdentifier = "OBJ_104"
                BuildableName = "hummingbird"
                BlueprintName = "hummingbird"
                ReferencedContainer = "container:hummingbird.xcodeproj">
@@ -84,7 +84,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_119"
+               BlueprintIdentifier = "OBJ_121"
                BuildableName = "hummingbirdKit.framework"
                BlueprintName = "hummingbirdKit"
                ReferencedContainer = "container:hummingbird.xcodeproj">
@@ -102,7 +102,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_136"
+               BlueprintIdentifier = "OBJ_139"
                BuildableName = "hummingbirdKitTests.xctest"
                BlueprintName = "hummingbirdKitTests"
                ReferencedContainer = "container:hummingbird.xcodeproj">
@@ -125,7 +125,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "OBJ_53"
+            BlueprintIdentifier = "OBJ_55"
             BuildableName = "CommandLineKit.framework"
             BlueprintName = "CommandLineKit"
             ReferencedContainer = "container:hummingbird.xcodeproj">

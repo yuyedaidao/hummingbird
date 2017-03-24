@@ -36,14 +36,14 @@ struct FindProcess {
         }
         
         for excluedPath in exclued {
-            args.append("-not")
-            args.append("-path")
             
             let filePath = path + excluedPath
             guard filePath.exists else {
+                print("\(filePath) is not existed")
                 continue
             }
-            
+            args.append("-not")
+            args.append("-path")
             if filePath.isDirectory {
                 args.append("\(filePath.string)/*")
             } else {

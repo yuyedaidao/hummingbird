@@ -2,6 +2,7 @@ import Foundation
 import CommandLineKit
 import Rainbow
 import hummingbirdKit
+import PathKit
 
 let cli = CommandLineKit.CommandLine()
 
@@ -46,4 +47,42 @@ let project = projectOption.value ?? "."
 let resourceExtensions = resourceExtensionsOption.value ?? ["png", "jpg", "imageset"]
 let fileExtensions = fileExtensionsOption.value ?? ["swift", "mm", "m", "xib", "storyboard"]
 let exludedPaths = exludePathsOption.value ?? []
+
+let hummingbird = Hummingbird(projectPath: project, excludedPaths: exludedPaths, resourceExtensions: resourceExtensions, fileExtensions: fileExtensions)
+let unusedFiles: [FileInof]
+
+do {
+    print("working...".bold)
+    unusedFiles = try hummingbird.unusedResources()
+} catch {
+    guard let e = error as? HummingbirdError else {
+        exit(EX_USAGE)
+    }
+    
+    switch e {
+    case .noResourceExtension: break
+    case .noFileExtension:break
+    }
+    
+    exit(EX_USAGE)
+}
+
+if unusedFiles.isEmpty {
+    print("No unused files!")
+    exit(EX_OK)
+}
+
+print("I found \(unusedFiles.count) files".green)
+for file in unusedFiles {
+    print("unused file: \(file.path.string) [\(file.size)]")
+}
+
+print("Delete? yes(Y|y) or no(N|n)")
+if let input = readLine(), input.lowercased() == "y" {
+    let fails = Hummingbird.delete(unusedFiles)
+    if !fails.isEmpty {
+        print("Some file deletion failed: \(fails)")
+    }
+}
+
 

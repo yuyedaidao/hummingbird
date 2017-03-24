@@ -30,13 +30,37 @@ extension String {
         return r
     }
     
-//    var plainName: String {
-//        let p = Path(self.lowercased())
-//        var result = p.lastComponentWithoutExtension
-//        if result.hasSuffix("@2x") || result.hasSuffix("@3x") {
-//            result = String(describing: result.utf16.dropLast(3)).lowercased()
-//        }
-//        return result
-//    }
+
+    func similarPatternWithNumberIndex(other: String) -> Bool {
+        let matches = digitalRegex.matches(in: other, options: [], range: other.fullRange)
+        guard matches.count >= 1 else {
+            return false
+        }
+        let lastMatch = matches.last!
+        let digitalRange = lastMatch.rangeAt(1)
+        
+        var prefix: String?
+        var suffiex: String?
+        
+        let digitalLocation = digitalRange.location
+        if digitalLocation != 0 {
+            let index = other.index(other.startIndex, offsetBy: digitalLocation)
+            prefix = other.substring(to: index)
+        }
+        
+        let digitalMaxRange = NSMaxRange(digitalRange)
+        if digitalMaxRange < other.utf8.count {
+            let index = other.index(other.startIndex, offsetBy: digitalMaxRange)
+            suffiex = other.substring(from: index)
+        }
+        
+        switch (prefix, suffiex) {
+        case (nil, nil): return false
+        case (let p?, nil): return hasPrefix(p)
+        case (nil, let s?): return hasSuffix(s)
+        case (let p?, let s?): return hasPrefix(p) && hasSuffix(s)
+        }
+        
+    }
     
 }
