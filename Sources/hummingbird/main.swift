@@ -7,14 +7,14 @@ import PathKit
 let cli = CommandLineKit.CommandLine()
 
 let projectOption = StringOption(shortFlag: "p", longFlag: "project", required: true, helpMessage: "Path to the project.")
-let exludePathsOption = MultiStringOption(shortFlag: "e", longFlag: "exclude", helpMessage: "Excluded paths which should not search.")
+let excludePathsOption = MultiStringOption(shortFlag: "e", longFlag: "exclude", helpMessage: "Excluded paths which should not search.")
 let resourceExtensionsOption = MultiStringOption(shortFlag: "r", longFlag: "resource-extensions", helpMessage: "Extensions to search.")
 let fileExtensionsOption = MultiStringOption(shortFlag: "f", longFlag: "file-extensions", helpMessage: "File extensions to search.")
 let help = BoolOption(shortFlag: "h", longFlag: "help",
                       helpMessage: "Prints a help message.")
 
 
-cli.addOptions(projectOption, resourceExtensionsOption, fileExtensionsOption, help)
+cli.addOptions(projectOption, resourceExtensionsOption, fileExtensionsOption, excludePathsOption, help)
 
 cli.formatOutput = { s, type in
     var str: String
@@ -46,9 +46,9 @@ if help.value {
 let project = projectOption.value ?? "."
 let resourceExtensions = resourceExtensionsOption.value ?? ["png", "jpg", "imageset"]
 let fileExtensions = fileExtensionsOption.value ?? ["swift", "mm", "m", "xib", "storyboard"]
-let exludedPaths = exludePathsOption.value ?? []
+let excludedPaths = excludePathsOption.value ?? []
 
-let hummingbird = Hummingbird(projectPath: project, excludedPaths: exludedPaths, resourceExtensions: resourceExtensions, fileExtensions: fileExtensions)
+let hummingbird = Hummingbird(projectPath: project, excludedPaths: excludedPaths, resourceExtensions: resourceExtensions, fileExtensions: fileExtensions)
 let unusedFiles: [FileInof]
 
 do {
@@ -73,11 +73,13 @@ if unusedFiles.isEmpty {
 }
 
 print("I found \(unusedFiles.count) files".green)
-for file in unusedFiles {
-    print("unused file: \(file.path.string) [\(file.size)]")
+var size: Int = 0
+for (index, file) in unusedFiles.enumerated() {
+    print("[\(index)] unused file: \(file.path.string) [\(file.size)]")
+    size += file.size
 }
-
-print("Delete? yes(Y|y) or no(N|n)")
+let total = Double(size) / 1024 / 1024
+print("Delete \(unusedFiles.count) files(\(String(format: "%.2f", total))M)?  yes(Y|y) or no(N|n)")
 if let input = readLine(), input.lowercased() == "y" {
     let fails = Hummingbird.delete(unusedFiles)
     if !fails.isEmpty {

@@ -22,7 +22,7 @@ extension RegexStringSearcher {
         var results = Set<String>()
         for pattern in patterns {
             guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else {
-                print("Failed to create pattern: \(pattern)")
+                print("Failed to create pattern: \(pattern)".red)
                 continue
             }
             let matches = regex.matches(in: content, options: [], range: content.fullRange)
@@ -48,7 +48,7 @@ struct ObjSearcher: RegexStringSearcher {
 
 struct XibSearcher: RegexStringSearcher {
     let extensions: [String]
-    let patterns = [""]
+    let patterns = ["\"(.+?)\""]
 }
 
 struct GeneralSearcher: RegexStringSearcher {
